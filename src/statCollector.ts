@@ -21,6 +21,7 @@ import {
 } from './interfaces'
 import * as logger from './logger'
 import { log } from 'console'
+import { renderLineChart, renderStackedAreaChart } from './chartRenderer'
 
 const STAT_SERVER_PORT = 7777
 
@@ -355,69 +356,45 @@ async function getDiskSizeStats(): Promise<ProcessedDiskSizeStats> {
   return { diskAvailableX, diskUsedX }
 }
 
-async function getLineGraph(options: LineGraphOptions): Promise<GraphResponse> {
-  const payload = {
-    options: {
-      width: 1000,
-      height: 500,
-      xAxis: {
-        label: 'Time'
-      },
-      yAxis: {
-        label: options.label
-      },
-      timeTicks: {
-        unit: 'auto'
-      }
-    },
-    lines: [options.line]
-  }
-
-  let response = null
+async function getLineGraph(
+  options: LineGraphOptions
+): Promise<GraphResponse | null> {
   try {
-    response = await axios.put(
-      'https://api.globadge.com/v1/chartgen/line/time',
-      payload
-    )
+    const dataUrl = await renderLineChart(options)
+    return {
+      id: buildGraphId(options.label),
+      url: dataUrl
+    }
   } catch (error: any) {
+    logger.error('Failed to render line chart')
     logger.error(error)
-    logger.error(`getLineGraph ${JSON.stringify(payload)}`)
+    return null
   }
-
-  return response?.data
 }
 
 async function getStackedAreaGraph(
   options: StackedAreaGraphOptions
-): Promise<GraphResponse> {
-  const payload = {
-    options: {
-      width: 1000,
-      height: 500,
-      xAxis: {
-        label: 'Time'
-      },
-      yAxis: {
-        label: options.label
-      },
-      timeTicks: {
-        unit: 'auto'
-      }
-    },
-    areas: options.areas
-  }
-
-  let response = null
+): Promise<GraphResponse | null> {
   try {
-    response = await axios.put(
-      'https://api.globadge.com/v1/chartgen/stacked-area/time',
-      payload
-    )
+    const dataUrl = await renderStackedAreaChart(options)
+    return {
+      id: buildGraphId(options.label),
+      url: dataUrl
+    }
   } catch (error: any) {
+    logger.error('Failed to render stacked area chart')
     logger.error(error)
-    logger.error(`getStackedAreaGraph ${JSON.stringify(payload)}`)
+    return null
   }
-  return response?.data
+}
+
+function buildGraphId(label: string): string {
+  return (
+    label
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'chart'
+  )
 }
 
 ///////////////////////////
