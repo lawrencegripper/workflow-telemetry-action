@@ -1,6 +1,9 @@
 name: smoketest
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - "master"
