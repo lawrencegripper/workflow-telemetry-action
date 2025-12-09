@@ -55251,6 +55251,7 @@ const PROC_TRACER_PID_KEY = 'PROC_TRACER_PID';
 const PROC_TRACER_OUTPUT_FILE_NAME = 'proc-trace.out';
 const PROC_TRACER_BINARY_NAME_UBUNTU_20 = 'proc_tracer_ubuntu-20';
 const PROC_TRACER_BINARY_NAME_UBUNTU_22 = 'proc_tracer_ubuntu-22';
+const PROC_TRACER_BINARY_NAME_UBUNTU_24 = 'proc_tracer_ubuntu-24';
 const DEFAULT_PROC_TRACE_CHART_MAX_COUNT = 100;
 const GHA_FILE_NAME_PREFIX = '/home/runner/work/_actions/';
 let finished = false;
@@ -55268,6 +55269,10 @@ function getProcessTracerBinaryName() {
                 if (majorVersion === 22) {
                     logger.info(`Using ${PROC_TRACER_BINARY_NAME_UBUNTU_22}`);
                     return PROC_TRACER_BINARY_NAME_UBUNTU_22;
+                }
+                if (majorVersion === 24) {
+                    logger.info(`Using ${PROC_TRACER_BINARY_NAME_UBUNTU_24}`);
+                    return PROC_TRACER_BINARY_NAME_UBUNTU_24;
                 }
             }
         }
