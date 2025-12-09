@@ -12,7 +12,7 @@ const CHARTCUTERIE_URL = `http://localhost:${CHARTCUTERIE_PORT}/render`
 const ACTION_DIR = path.resolve(__dirname, '..')
 
 let chartcuterieStarted = false
-let containerName: string | null = null
+let containerName = 'chartcuterie-default'
 
 async function ensureChartcuterieRunning(): Promise<void> {
   if (chartcuterieStarted) {
@@ -67,6 +67,7 @@ async function waitForService(maxRetries = 30, delayMs = 1000): Promise<void> {
       }
     }
   }
+  await exec.exec('docker', ['log', containerName])
   throw new Error('Chartcuterie service failed to start')
 }
 
