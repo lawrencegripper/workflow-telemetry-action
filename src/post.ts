@@ -4,6 +4,7 @@ import { Octokit } from '@octokit/action'
 import * as stepTracer from './stepTracer'
 import * as statCollector from './statCollector'
 import * as processTracer from './processTracer'
+import * as chartRenderer from './chartRenderer'
 import * as logger from './logger'
 import { WorkflowJobType } from './interfaces'
 
@@ -155,6 +156,9 @@ async function run(): Promise<void> {
     }
 
     await reportAll(currentJob, allContent)
+
+    // Stop chartcuterie container if it was started
+    await chartRenderer.stopChartcuterie()
 
     logger.info(`Finish completed`)
   } catch (error: any) {
