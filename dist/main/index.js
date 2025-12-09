@@ -45628,6 +45628,7 @@ function waitForService(maxRetries = 30, delayMs = 1000) {
     return __awaiter(this, void 0, void 0, function* () {
         for (let i = 0; i < maxRetries; i++) {
             try {
+                yield exec.exec('docker', ['logs', containerName]);
                 yield axios_1.default.get(`http://localhost:${CHARTCUTERIE_PORT}/health`, {
                     timeout: 1000
                 });
@@ -45640,7 +45641,6 @@ function waitForService(maxRetries = 30, delayMs = 1000) {
                 }
             }
         }
-        yield exec.exec('docker', ['log', containerName]);
         throw new Error('Chartcuterie service failed to start');
     });
 }
