@@ -13,7 +13,7 @@
     "package:post": "ncc build --source-map src/post.ts --out dist/post",
     "package:statCollector": "ncc build --source-map src/statCollector.ts --out dist/sc",
     "package:statCollectorWorker": "ncc build --source-map src/statCollectorWorker.ts --out dist/scw",
-    "package": "npm run package:main && npm run package:post && npm run package:statCollector && npm run package:statCollectorWorker",
+    "package": "npm run build && ncc build",
     "test": "echo \"Warn: no test specified\" && exit 0",
     "all": "npm run format-check && npm run lint && npm run build && npm run package && npm test"
   },
@@ -46,7 +46,7 @@
     "systeminformation": "^5.11.15"
   },
   "devDependencies": {
-    "@types/node": "^16.3.3",
+    "@types/node": "^22.16.0",
     "@types/sprintf-js": "^1.1.2",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
