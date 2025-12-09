@@ -45592,7 +45592,7 @@ const CHARTCUTERIE_URL = `http://localhost:${CHARTCUTERIE_PORT}/render`;
 // Get the action's root directory (one level up from lib/ or src/)
 const ACTION_DIR = path.resolve(__dirname, '..');
 let chartcuterieStarted = false;
-let containerName = null;
+let containerName = 'chartcuterie-default';
 function ensureChartcuterieRunning() {
     return __awaiter(this, void 0, void 0, function* () {
         if (chartcuterieStarted) {
@@ -45640,6 +45640,7 @@ function waitForService(maxRetries = 30, delayMs = 1000) {
                 }
             }
         }
+        yield exec.exec('docker', ['log', containerName]);
         throw new Error('Chartcuterie service failed to start');
     });
 }
@@ -45654,7 +45655,7 @@ function stopChartcuterie() {
             catch (err) {
                 logger.error(`Failed to stop chartcuterie container: ${err}`);
             }
-            containerName = null;
+            containerName = '';
             chartcuterieStarted = false;
         }
     });

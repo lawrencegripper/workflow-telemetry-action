@@ -80,7 +80,7 @@ export async function stopChartcuterie(): Promise<void> {
     } catch (err) {
       logger.error(`Failed to stop chartcuterie container: ${err}`)
     }
-    containerName = null
+    containerName = ''
     chartcuterieStarted = false
   }
 }
